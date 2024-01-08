@@ -1,7 +1,7 @@
 import user from "./../model/User.js";
 import md5  from "md5";
 
-const  postApiSingup = async (req, res) => {
+const  postApiSignup = async (req, res) => {
     const { email, password, name } = req.body;
 
     const newUser = new user({
@@ -43,4 +43,4 @@ const postApiLogin = async (req, res) => {
     })
 }
 
-export { postApiSingup , postApiLogin }
+export { postApiSignup , postApiLogin }

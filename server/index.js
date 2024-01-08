@@ -2,11 +2,33 @@ import express from 'express';
 import mongoose from 'mongoose';
 import  dotenv from 'dotenv';
 dotenv.config();
+import { Server } from 'socket.io';
 
-import { postApiLogin, postApiSingup } from './controller/user.js';
+import { postApiLogin, postApiSignup } from './controller/user.js';
 
 const app = express();
 app.use(express.json());
+
+const io = new Server(5002, {
+    cors: {
+       origin: '*',
+    },
+});
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+
+   socket.on('message', (data)=>{
+     console.log(data);
+   }) 
+});
+
+app.get('/sendMessage', (req, res) => {
+   const { message } = req.query;
+   io.emit('receive', message);
+
+   res.status(200).json({ message: 'Message sent' });
+});
 
 const connectDB = async () => {
 
@@ -22,11 +44,11 @@ const connectDB = async () => {
 };
 connectDB();
 
-app.post('/api/signup', postApiSingup)
+app.post('/api/signup', postApiSignup)
 
 app.post('/api/login',postApiLogin )
 
-const PORT = 5000;
+const PORT = 5001;
 
 app.listen(PORT, () => {
     console.log(`server is runing on port ${PORT}`)
