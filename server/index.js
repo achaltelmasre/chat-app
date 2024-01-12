@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
    }) 
 });
 
-app.get('/sendMessage', (req, res) => {
+app.get('/sendMessage+56', (req, res) => {
    const { message } = req.query;
    io.emit('receive', message);
 
