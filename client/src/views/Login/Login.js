@@ -1,12 +1,49 @@
-import React from "react";
+import React, { useState } from 'react'
+import axios from 'axios';
 
-function Login () {
+function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  
 
-    return(
-        <>
-          <h1>Login</h1>
+  const loginNow = async () => {
+    try {
+      const { data } = await axios.post('/api/login', { email, password });
+      alert(data.message);
+      if (data) {
+        localStorage.setItem('user', JSON.stringify(data?.data));
+        window.location.href = '/';
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-        </>
-    )
+  return (
+    <div>
+      <div className='container'>
+        <h1 className='text-center'>Login</h1>
+        <input type="text"
+          placeholder="Email" value={email}
+          onChange={e => setEmail(e.target.value)}
+          className='form-control mt-3'
+        />
+
+        <input type="password"
+          placeholder="Password"
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          className='form-control mt-3'
+        />
+
+        <button onClick={loginNow} type='button'
+          className='btn btn-primary d-block mt-5 w-50 mx-auto'
+        >
+          Login
+        </button>
+      </div>
+    </div >
+  )
 }
-export default Login;
+
+export default Login
