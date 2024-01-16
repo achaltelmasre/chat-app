@@ -23,7 +23,7 @@ io.on('connection', (socket) => {
    }) 
 });
 
-app.get('/sendMessage+56', (req, res) => {
+app.get('/sendMessage', (req, res) => {
    const { message } = req.query;
    io.emit('receive', message);
 
@@ -47,6 +47,11 @@ connectDB();
 app.post('/api/signup', postApiSignup)
 
 app.post('/api/login',postApiLogin )
+
+app.get('/users', async (req, res) => {
+    const users = await User.find({}).select('_id fullName email');
+    res.status(200).json({ data: users });
+  });
 
 const PORT = 5001;
 
