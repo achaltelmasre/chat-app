@@ -49,7 +49,7 @@ app.post('/api/signup', postApiSignup)
 app.post('/api/login',postApiLogin )
 
 app.get('/users', async (req, res) => {
-    const users = await User.find({}).select('_id fullName email');
+    const users = await users.find({}).select('_id fullName email');
     res.status(200).json({ data: users });
   });
 
